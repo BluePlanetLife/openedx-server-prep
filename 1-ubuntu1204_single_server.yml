@@ -1,0 +1,100 @@
+---
+- name: Prepare single Ubuntu Server for edX Installation
+  hosts: all
+  user: ubuntu
+  sudo: True
+  gather_facts: False
+
+  vars:
+    # Playbook
+    local_conf: False
+    config_folder: configuration
+    config_repo: git@github.com:edx/configuration.git
+    openedx_version: aspen.1
+    # System
+    TIMEZONE: Europe/Zurich
+    LOCALE: en_GB.UTF-8
+
+  handlers:
+    - name: Update tzdata
+      command: dpkg-reconfigure --frontend noninteractive tzdata
+      
+    - name: reboot
+      command: shutdown -r now 'Rebooting to complete system upgrade'
+               removes=/var/run/reboot-required
+
+  tasks:
+    - name: Generate locales
+      command: locale-gen {{ LOCALE }}
+  
+    - name: Set locale
+      command: >
+        /usr/sbin/update-locale
+        LANG={{ LOCALE }}
+        LANGUAGE={{ LOCALE }}
+        LC_ALL={{ LOCALE }}
+
+    - name: Set /etc/timezone
+      template: src=templates/etc/timezone dest=/etc/timezone
+      notify: update tzdata
+
+    - name: Update System
+      apt: update_cache=yes
+
+    - name: Upgrade System
+      apt: upgrade=full
+      notify: reboot
+
+    - name: Install packages
+      action: apt pkg={{item}} state=installed
+      with_items:
+      # basics
+      - htop
+      - unzip
+      # edx requirements
+      - build-essential
+      - software-properties-common
+      - python-software-properties
+      - curl
+      - libxml2-dev
+      - libxslt1-dev
+      - libfreetype6-dev
+      - python-pip
+      - python-apt
+      - python-dev
+      - git-core
+      
+    - name: Prepare PIP
+      shell: sudo pip install --upgrade pip && sudo pip install --upgrade virtualenv
+
+    - name: Pull Repo - Local
+      synchronize: src=../{{ config_folder }} dest=/var/tmp/ recursive=yes
+      when: local_conf
+      
+    - name: Pull Repo - Origin
+      git: >
+        dest=/var/tmp/
+        repo={{ config_repo }}
+        version={{ openedx_version }}
+        accept_hostkey=yes
+      when: local_conf == False
+
+    - name: Rename Configuration folder
+      shell: mv /var/tmp/{{ config_folder }} /var/tmp/configuration
+
+    - name: Run requirements file
+      pip: chdir=/var/tmp/configuration/  requirements=requirements.txt
+
+    ### THIS IS EXPERIMENTAL
+    ### (Playbook output not displayed during execution)  
+    #- name: Install edX
+    #  shell: >
+    #    cd /var/tmp/configuration/playbooks 
+    #    && sudo ansible-playbook
+    #    -c local ./edx_sandbox.yml
+    #    -i "localhost,"
+    #    -e edx_platform_version={{ openedx_version }}
+    #    -e ora2_version={{ openedx_version }}
+    #    -e certs_version={{ openedx_version }}
+    #    -e forum_version={{ openedx_version }}
+    #    -e xqueue_version={{ openedx_version }}
