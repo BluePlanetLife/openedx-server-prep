@@ -1,0 +1,7 @@
+---
+- name: Split Server Installation
+  hosts: all
+  sudo: yes
+  roles:
+    - app-server
+    - db-server

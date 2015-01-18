@@ -16,7 +16,7 @@
     LOCALE: en_GB.UTF-8
 
   handlers:
-    - name: Update tzdata
+    - name: update tzdata
       command: dpkg-reconfigure --frontend noninteractive tzdata
       
     - name: reboot
@@ -51,6 +51,8 @@
       # basics
       - htop
       - unzip
+      # security
+      - unattended-upgrades
       # edx requirements
       - build-essential
       - software-properties-common
