@@ -81,6 +81,14 @@
         accept_hostkey=yes
       when: local_conf == False
 
+    - name: Check if directory already exists
+      stat: path=/var/tmp/configuration
+      register: p
+
+    - name: Remove existing configuration directory
+      shell: sudo rm -r /var/tmp/configuration
+      when: p.stat.isdir is defined and p.stat.isdir
+
     - name: Rename Configuration folder
       shell: mv /var/tmp/{{ config_folder }} /var/tmp/configuration
 
