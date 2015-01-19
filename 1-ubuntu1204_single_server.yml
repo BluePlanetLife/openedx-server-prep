@@ -9,7 +9,7 @@
     # Playbook
     local_conf: False
     config_folder: configuration
-    config_repo: git@github.com:edx/configuration.git
+    config_repo: https://github.com/edx/configuration.git
     openedx_version: aspen.1
     # System
     TIMEZONE: Europe/Zurich
@@ -26,7 +26,7 @@
   tasks:
     - name: Generate locales
       command: locale-gen {{ LOCALE }}
-  
+
     - name: Set locale
       command: >
         /usr/sbin/update-locale
@@ -65,21 +65,9 @@
       - python-apt
       - python-dev
       - git-core
-      
+
     - name: Prepare PIP
       shell: sudo pip install --upgrade pip && sudo pip install --upgrade virtualenv
-
-    - name: Pull Repo - Local
-      synchronize: src=../{{ config_folder }} dest=/var/tmp/ recursive=yes
-      when: local_conf
-      
-    - name: Pull Repo - Origin
-      git: >
-        dest=/var/tmp/
-        repo={{ config_repo }}
-        version={{ openedx_version }}
-        accept_hostkey=yes
-      when: local_conf == False
 
     - name: Check if directory already exists
       stat: path=/var/tmp/configuration
@@ -89,22 +77,29 @@
       shell: sudo rm -r /var/tmp/configuration
       when: p.stat.isdir is defined and p.stat.isdir
 
+    - name: Pull Repo - Local
+      synchronize: src=../{{ config_folder }} dest=/var/tmp/ recursive=yes
+      when: local_conf
+
     - name: Rename Configuration folder
       shell: mv /var/tmp/{{ config_folder }} /var/tmp/configuration
+      when: local_conf
+
+    - name: Pull Repo - Origin
+      git: >
+        dest=/var/tmp/{{ config_folder }}
+        repo={{ config_repo }}
+        version={{ openedx_version }}
+        accept_hostkey=yes
+      when: local_conf == False
+
+    - name: Check if directory already exists
+      stat: path=/var/tmp/configuration
+      register: check_path
+
+    - name: Rename Configuration folder
+      shell: mv /var/tmp/{{ config_folder }} /var/tmp/configuration
+      when: check_path.stat.exists == false
 
     - name: Run requirements file
-      pip: chdir=/var/tmp/configuration/  requirements=requirements.txt
-
-    ### THIS IS EXPERIMENTAL
-    ### (Playbook output not displayed during execution)  
-    #- name: Install edX
-    #  shell: >
-    #    cd /var/tmp/configuration/playbooks 
-    #    && sudo ansible-playbook
-    #    -c local ./edx_sandbox.yml
-    #    -i "localhost,"
-    #    -e edx_platform_version={{ openedx_version }}
-    #    -e ora2_version={{ openedx_version }}
-    #    -e certs_version={{ openedx_version }}
-    #    -e forum_version={{ openedx_version }}
-    #    -e xqueue_version={{ openedx_version }}
+      pip: chdir=/var/tmp/configuration/ requirements=requirements.txt
