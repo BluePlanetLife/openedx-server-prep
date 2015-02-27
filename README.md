@@ -10,6 +10,8 @@ The preparation is managed by [Ansible](http://ansible.com/) and is intended for
 ### Installation types covered
 Currently the playbook is created for the purpose of preparing an [edx Ubuntu 12.04 64-bit single server installation](https://github.com/edx/configuration/wiki/edX-Ubuntu-12.04-64-bit-Installation) as described on the [edx/edx-platform](https://github.com/edx/edx-platform) wiki pages.
 
+Now also supporting Backup and Restore playbooks.
+
 ### Functions and Options
 * Prepare Configuration Files
   * Transfer the configuration from a local folder
@@ -23,6 +25,10 @@ Currently the playbook is created for the purpose of preparing an [edx Ubuntu 12
   * Locale
 * Additional Packages
   * htop
+* Backup and Restore
+  * Backup to the the machine executing the playbook
+  * Restore the backup just created
+  * Your previous backups will remain in the files/backups folder
 
 ## Requirements
 * [Ansible](http://docs.ansible.com/intro_installation.html) installed locally
@@ -32,10 +38,10 @@ Currently the playbook is created for the purpose of preparing an [edx Ubuntu 12
 ## Installation & Customization
 1. Clone 
 2. Add an IP address to the `hosts` file, underneath `[all]`
-3. Edit the file `1-ubuntu1204_single_server.yml`
+3. Edit the file you want to use
   3.1 Edit `user: ubuntu` to match your user for SSH
   3.2 Define the hosts you want to have prepared (default: `all`)
-4. Edit `Playbook` and `System` Variables (`var: default`)
+4. Edit `Playbook` and `System` Variables in the 1. playbook (`var: default`)
   - Use a local configuration folder (`local_conf: False`)
   - Name of the local configuration folder (`config_folder: configuration`)
   - Repository for remote configuration (`config_repo: git@github.com:edx/configuration.git`)
@@ -51,6 +57,18 @@ After customizing your hosts and 1-ubuntu1204_single_server.yml file, run the fo
 ```bash
 ansible-playbook -i hosts 1-ubuntu1204_single_server.yml
 ```
+
+### Backup and Restore
+After customizing your hosts and backup/restore files, run the following command for a backup:
+```bash
+ansible-playbook -i hosts 98-db-backup.yml
+```
+or for Resotre that backup
+```bash
+ansible-playbook -i hosts 99-db-restore.yml
+```
+
+
 
 ! Custom Configuration !
 In case you have a customized configuration, make sure to place it one the same folder level as this folder:
