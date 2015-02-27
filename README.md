@@ -10,7 +10,7 @@ The preparation is managed by [Ansible](http://ansible.com/) and is intended for
 ### Installation types covered
 Currently the playbook is created for the purpose of preparing an [edx Ubuntu 12.04 64-bit single server installation](https://github.com/edx/configuration/wiki/edX-Ubuntu-12.04-64-bit-Installation) as described on the [edx/edx-platform](https://github.com/edx/edx-platform) wiki pages.
 
-Now also supporting Backup and Restore playbooks.
+Now also supporting Backup and Restore playbooks. Note: For now this playbook only dumps and restores the MySQL containing Users and MongoDB containing Courses.
 
 ### Functions and Options
 * Prepare Configuration Files
