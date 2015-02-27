@@ -1,0 +1,39 @@
+# Playbook to do backups
+- name: Create DB Backup
+  hosts: 
+  user: 
+  sudo: True
+  gather_facts: False
+  vars:
+    remote_dir: /tmp/backup
+    backup_dir: "{{ remote_dir }}/{{ timestamp }}"
+    backup_file: "{{ timestamp }}.tar.gz"
+    backup_path: "{{ remote_dir }}/{{ backup_file }}"
+    backup_file_sql: backup.sql
+    local_dir: files/backups/
+
+# Pre-Task
+  pre_tasks:
+    - set_fact: timevar="{{ lookup('pipe','date +%Y%m%d-%H%M > timestamp.txt') }}"
+    - set_fact: timestamp="{{ lookup('file','timestamp.txt') }}"
+
+# Tasks for backups
+  tasks:  
+    - name: backup folder
+      file: path={{ remote_dir }}/{{ item }} state=directory
+      with_items:
+        - "{{ timestamp }}"
+        - "{{ timestamp }}/mysql"
+        - "{{ timestamp }}/mongo"
+    
+    - name: mysql dump
+      shell: chdir="{{ backup_dir }}/mysql" mysqldump edxapp -u root --single-transaction > backup.sql
+      
+    - name: mongo dump
+      command: chdir="{{ backup_dir }}/mongo" mongodump --db edxapp
+    
+    - name: archive files
+      command: chdir="{{ remote_dir }}" tar -czf {{ backup_file }} {{ timestamp }}
+    
+    - name: copy backup to local
+      fetch: src={{ backup_path }} dest={{ local_dir }} flat=yes fail_on_missing=yes

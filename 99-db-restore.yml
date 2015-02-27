@@ -1,0 +1,31 @@
+# Playbook to do restore
+- name: Restore DB from Backup
+  hosts: 
+  user: 
+  sudo: True
+  gather_facts: False
+  vars:
+    timestamp: "{{ lookup('file', 'timestamp.txt') }}"
+    restore_dir: /tmp/restore
+    restore_dest: "{{ restore_dir }}/{{ timestamp }}"
+    restore_tar: "{{ timestamp }}.tar.gz"
+    local_dir: files/backups
+    local_path: "{{ local_dir }}/{{ restore_tar }}"
+
+
+# Tasks for restore
+  tasks:
+    - name: restore folder
+      file: path={{ restore_dir }} state=directory
+
+    - name: upload backup
+      synchronize: src="{{ local_path }}" dest="{{ restore_dir }}"
+
+    - name: unpack backup
+      unarchive: src="{{ restore_dir }}/{{ restore_tar }}" dest="{{ restore_dir }}" copy=no
+
+    - name: restore db
+      shell: chdir="{{ restore_dest }}/{{ item.dir }}" {{ item.com }}
+      with_items:
+        - { com: 'mysql -u root edxapp < backup.sql', dir: 'mysql' }
+        - { com: 'mongorestore dump/', dir: 'mongo' }
