@@ -36,16 +36,17 @@ Now also supporting Backup and Restore playbooks. Note: For now this playbook on
 * [Further requirements for Open edX](https://github.com/edx/configuration/wiki/edX-Ubuntu-12.04-64-bit-Installation#hardware-requirements)
 
 ## Installation & Customization
-0. prepare your machine
-  1. install virtualenv
-  2. activate that virtualenv
-  3. pip install ansible within that virtualenv
-1. Clone 
-2. Add an IP address to the `hosts` file, underneath `[all]`. Use ip address of vagrant box if using vagrant
-3. Edit the file you want to use
-  1. Edit `user: ubuntu` to match your user for SSH. Use `vagrant` if using vagrant.
-  2. Define the hosts you want to have prepared (default: `all`)
-4. Edit `Playbook` and `System` Variables in the 1. playbook (`var: default`)
+1. prepare your machine
+  - install virtualenv
+  - activate that virtualenv
+  - `pip install ansible` within that virtualenv
+2. Clone 
+3. Add an IP address to the `hosts` file, underneath `[all]`. 
+  - Use ip address of vagrant box if using vagrant
+4. Edit the file you want to use
+  - Edit `user: ubuntu` to match your user for SSH. Use `vagrant` if using vagrant.
+  - Define the hosts you want to have prepared (default: `all`)
+5. Edit `Playbook` and `System` Variables in the 1. playbook (`var: default`)
   - Use a local configuration folder (`local_conf: False`)
   - Name of the local configuration folder (`config_folder: configuration`)
   - Repository for remote configuration (`config_repo: git@github.com:edx/configuration.git`)
