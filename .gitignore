@@ -1,5 +1,8 @@
 # For Mac users
 .DS_Store
 
+# Don't commit your backup data dumps.
+files/backup
+
 # To protect your privacy
 hosts
