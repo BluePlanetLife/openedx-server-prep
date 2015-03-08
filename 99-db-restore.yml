@@ -9,7 +9,7 @@
     restore_dir: /tmp/restore
     restore_dest: "{{ restore_dir }}/{{ timestamp }}"
     restore_tar: "{{ timestamp }}.tar.gz"
-    local_dir: files/backups
+    local_dir: files/backup
     local_path: "{{ local_dir }}/{{ restore_tar }}"
 
 
