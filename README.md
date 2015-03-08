@@ -36,7 +36,7 @@ Now also supporting Backup and Restore playbooks. Note: For now this playbook on
 * [Further requirements for Open edX](https://github.com/edx/configuration/wiki/edX-Ubuntu-12.04-64-bit-Installation#hardware-requirements)
 
 ## Installation & Customization
-1. prepare your machine
+1. Prepare your workstation
   - install virtualenv
   - activate that virtualenv
   - `pip install ansible` within that virtualenv
