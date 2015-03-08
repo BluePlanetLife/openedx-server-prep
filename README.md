@@ -63,7 +63,7 @@ After customizing your hosts and backup/restore files, run the following command
 ```bash
 ansible-playbook -i hosts 98-db-backup.yml
 ```
-or for Resotre that backup
+or for Restore that backup
 ```bash
 ansible-playbook -i hosts 99-db-restore.yml
 ```
