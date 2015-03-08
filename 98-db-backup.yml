@@ -10,7 +10,7 @@
     backup_file: "{{ timestamp }}.tar.gz"
     backup_path: "{{ remote_dir }}/{{ backup_file }}"
     backup_file_sql: backup.sql
-    local_dir: files/backups/
+    local_dir: files/backup/
 
 # Pre-Task
   pre_tasks:
