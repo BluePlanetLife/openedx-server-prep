@@ -43,8 +43,8 @@ Now also supporting Backup and Restore playbooks. Note: For now this playbook on
 1. Clone 
 2. Add an IP address to the `hosts` file, underneath `[all]`. Use ip address of vagrant box if using vagrant
 3. Edit the file you want to use
-  1 Edit `user: ubuntu` to match your user for SSH. Use `vagrant` if using vagrant.
-  2 Define the hosts you want to have prepared (default: `all`)
+  1. Edit `user: ubuntu` to match your user for SSH. Use `vagrant` if using vagrant.
+  2. Define the hosts you want to have prepared (default: `all`)
 4. Edit `Playbook` and `System` Variables in the 1. playbook (`var: default`)
   - Use a local configuration folder (`local_conf: False`)
   - Name of the local configuration folder (`config_folder: configuration`)
