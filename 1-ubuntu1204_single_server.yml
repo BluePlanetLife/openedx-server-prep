@@ -65,9 +65,15 @@
       - python-apt
       - python-dev
       - git-core
+      - python-virtualenv 
+      - virtualenvwrapper
+      - gcc
+      - autoconf
+      - g++
+      - ca-certificates
 
     - name: Prepare PIP
-      shell: sudo pip install --upgrade pip && sudo pip install --upgrade virtualenv
+      shell: sudo pip install --upgrade pip && sudo pip install --upgrade virtualenv && sudo pip install --upgrade virtualenvwrapper 
 
     - name: Check if directory already exists
       stat: path=/var/tmp/configuration
