@@ -24,6 +24,9 @@
     - name: unpack backup
       unarchive: src="{{ restore_dir }}/{{ restore_tar }}" dest="{{ restore_dir }}" copy=no
 
+    - name: clean stale mongo edxapp
+      shell: mongo edxapp --eval "db.dropDatabase()"
+
     - name: restore db
       shell: chdir="{{ restore_dest }}/{{ item.dir }}" {{ item.com }}
       with_items:
