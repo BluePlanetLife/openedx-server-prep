@@ -6,3 +6,6 @@ files/backup
 
 # To protect your privacy
 hosts
+
+# To protect your locally stored secrets
+secrets/
