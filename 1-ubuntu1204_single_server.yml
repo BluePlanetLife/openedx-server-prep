@@ -10,7 +10,7 @@
     local_conf: False
     config_folder: configuration
     config_repo: https://github.com/edx/configuration.git
-    openedx_version: aspen.1
+    openedx_version: named-release/birch
     # System
     TIMEZONE: Europe/Zurich
     LOCALE: en_GB.UTF-8
