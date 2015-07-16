@@ -26,7 +26,7 @@ Now also supporting Backup and Restore playbooks. Note: For now this playbook on
 * Additional Packages
   * htop
 * Backup and Restore
-  * Backup to the the machine executing the playbook
+  * Backup to the the machine executing the playbook (can be set to localhost)
   * Restore the backup just created
   * Your previous backups will remain in the files/backups folder
 
