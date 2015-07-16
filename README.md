@@ -20,7 +20,6 @@ Now also supporting Backup and Restore playbooks. Note: For now this playbook on
   * release
   * master
   * named-release/birch ([Named-Releases](https://github.com/edx/configuration/wiki/Named-Releases))
-  * named-release/birch
 * System Settings
   * Time Zone
   * Locale
@@ -51,7 +50,7 @@ Now also supporting Backup and Restore playbooks. Note: For now this playbook on
   - Use a local configuration folder (`local_conf: False`)
   - Name of the local configuration folder (`config_folder: configuration`)
   - Repository for remote configuration (`config_repo: git@github.com:edx/configuration.git`)
-  - Open edX version to clone from GitHub (`openedx_version: aspen.1`). You may want `named-release/birch`
+  - Open edX version to clone from GitHub (`openedx_version: named-release/birch`). You may want `named-release/aspen`
   - Select your time zone (`timezone: Europe/Zurich`)
   - Set your locale settings (`locale: en_GB.UTF-8`)
   
