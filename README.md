@@ -19,7 +19,7 @@ Now also supporting Backup and Restore playbooks. Note: For now this playbook on
 * Select an Open edX version
   * release
   * master
-  * aspen.1 ([Named-Releases](https://github.com/edx/configuration/wiki/Named-Releases))
+  * named-release/birch ([Named-Releases](https://github.com/edx/configuration/wiki/Named-Releases))
   * named-release/birch
 * System Settings
   * Time Zone
